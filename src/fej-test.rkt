@@ -30,16 +30,6 @@
                          )))
 (define term-m (term (((C R) m (((C R) x))) x)))
 
-;(redex-match fej L term0)
-;(redex-match fej CT class-table)
-;(redex-match fej CT '((class A ())))
-;(redex-match fej (T f) '((A) a))
-;(redex-match fej (class C any ...) '(class A ()))
-;(redex-match fej L '(class F () (role Z requires ((A) m (((A) x))) (((A) a) ((B) b)))))
-;(redex-match fej (A_0 ... role R any ... A_1 ...) '(role Z requires ((A) m (((A) x))) (((A) a) ((B) b))))
-;(redex-match fej (class C any ... A_0 ... (role R requires Mi ... ((T f) ...) M ...)  A_1 ...)
-;             '(class F () (role Z requires ((A) m (((A) x))) (((A) a) ((B) b)))))
-
 ; test metafunction class-lookup
 (test-equal (term (class-lookup ,class-table A))
             '(class A ()))
@@ -78,7 +68,6 @@
 (test-equal (term (method-in m (((C R) n (((C R) x))) x) (((C R) o (((C R) x))) x)))
             #f)
 
-;(traces (term (mbody ,class-table m ((F Z) (F Y) B))))
 ; test metafunction mbody
 (test-equal (term (mbody ,class-table m (() B)))
             '((x) x (() B)))

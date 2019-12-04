@@ -4,7 +4,7 @@
          "fej-meta.rkt"
          redex/reduction-semantics)
 
-(provide  )
+(provide  red)
 
 (define red
   (reduction-relation
