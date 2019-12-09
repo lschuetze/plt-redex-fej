@@ -37,7 +37,7 @@
    (bind x ... with r ... from y ... e))
 
   ; values
-  (v (new C v ...  r ...))
+  (v (new C v ... ⊕ r ...))
 
   ; role instance
   (r (v R v ...))
@@ -53,6 +53,9 @@
    (call v m v ... E e ...) ; CR-INVK-ARG ;; Fig. 16 is not clear here - take definition of FJ
    (new C v ... E e ...) ; CR-NEW
    )
+
+  ; typing environment
+  (Γ ((x T) ...))
 
   (Bool #t #f)
 
