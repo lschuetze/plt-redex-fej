@@ -10,7 +10,8 @@
   (L ::= (class C ((T f) ...) M ... A ... ))
 
   ; role declarations
-  (A ::= (role R requires Mi ... ((T f) ...) M ... ))
+  (A ::= (role R requires Mi
+               ... ((T f) ...) M ... ))
 
   ; type declarations
   (T ::= (C R)
@@ -43,12 +44,14 @@
   (CT ::= (L ...))
 
   ; evaluation contexts
-  (E ::= hole
-     (lkp E f) ; CR-FIELD
+  (E ::= (lkp E f) ; CR-FIELD
      (call E m e ...) ; CR-INVK
      (call v m v ... E e ...) ; CR-INVK-ARG
-     (new C v ... E e ...) ; CR-NEW
-     )
+     ;(new C v ... E e ...) ; CR-NEW
+     (new C v ... E e ... ⊕ ((new C e ... ⊕ ) R e ...))
+     (new C v ... ⊕ ((new C v ... E e ... ⊕ ) R e ...))
+     (new C v ... ⊕ ((new C v ... ⊕ ) R v ... E e ...))
+     hole)
 
   ; typing environment
   (Γ ::= ((x T) ...))
