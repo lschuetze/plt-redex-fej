@@ -22,9 +22,13 @@
         )
   )
 
-;(redex-match fej v '(new E (new A ⊕ ) (new B ⊕) ⊕ ))
-;(redex-match fej r '((new F ⊕ ) Z (new A ⊕ ) (new B ⊕)))
-;(redex-match fej v '(new E (new A ⊕ ) (new B ⊕) ⊕ ((new F ⊕ ) Z (new A ⊕ ) (new B ⊕))))
+; programs
+(define term0 (term (lkp (new E (new A ⊕ ) (new B ⊕) ⊕ ) a)))
+
+; examples
+(define example0
+  `(,term0 ,class-table))
+
 ; tests fvalue for fvalue metafunction 
 (test-equal (term (fvalue ,class-table a (new E (new A ⊕ ) (new B ⊕) ⊕ )))
             '(new A ⊕ ))
@@ -32,5 +36,10 @@
             '(new A ⊕ ))
 (test-equal (term (fvalue ,class-table a (new E (new A ⊕ ) (new B ⊕) ⊕ ((new F ⊕ ) Y) ((new F ⊕ ) Z (new A ⊕ ) (new B ⊕)))))
             '(new A ⊕ ))
+
+; test reduction rules
+(test--> red
+          example0
+          `((new A ⊕ ) ,class-table))
 
 (test-results)

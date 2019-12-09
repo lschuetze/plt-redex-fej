@@ -33,13 +33,13 @@
 (define red
   (reduction-relation
    fej
-   #:domain (t CT)
+   #:domain (e CT)
 
    ; R-FIELD
    (--> ((in-hole E (lkp (new C v ... ⊕ r ...) f_i)) CT)
         ((in-hole E w) CT)
         "(R-FIELD)"
-        (where (w) (fvalue CT f_i (new C v ... ⊕ r ...))))
+        (where w (fvalue CT f_i (new C v ... ⊕ r ...))))
    ))
 
 
