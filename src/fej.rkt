@@ -31,27 +31,25 @@
   (e ::= x
      (lkp e f)
      (call e m e ...)
-     (new C e ... ⊕ r ...)
-     (bind x ... with r ... from y ... e))
+     (new C e ... ⊕ (e R e ...) ...)
+     (bind x ... with (e R e ...) ... from y ... e))
 
   ; values
-  (v ::= (new C v ... ⊕ r ...))
-
-  ; role instance
-  (r ::= (v R v ...))
+  (v ::= (new C v ... ⊕ (v R v ...) ...))
 
   ; class table
   (CT ::= (L ...))
 
   ; evaluation contexts
-  (E ::= (lkp E f) ; CR-FIELD
+  (E ::= hole
+     (lkp E f) ; CR-FIELD
      (call E m e ...) ; CR-INVK
      (call v m v ... E e ...) ; CR-INVK-ARG
-     ;(new C v ... E e ...) ; CR-NEW
-     (new C v ... E e ... ⊕ ((new C e ... ⊕ ) R e ...))
-     (new C v ... ⊕ ((new C v ... E e ... ⊕ ) R e ...))
-     (new C v ... ⊕ ((new C v ... ⊕ ) R v ... E e ...))
-     hole)
+     (new C v ... E e ... ⊕ (e R e ...) ...)
+     (new C v ... ⊕ (E R e ...) (e R_1 e ...) ...)
+     (new C v ... ⊕ (v R v ... E e ...) (v R_1 e ...) ...)
+     (bind x ... with (E R e ...) (e R_1 e ...) ... from y ... e)
+     (bind x ... with (v R v ... E e ...) (e R_1 e ...) ... from y ... e))
 
   ; typing environment
   (Γ ::= ((x T) ...))

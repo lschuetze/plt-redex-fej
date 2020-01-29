@@ -1,5 +1,4 @@
 #lang racket
-
 (require "fej.rkt"
          "fej-meta.rkt"
          redex/reduction-semantics)
@@ -34,12 +33,11 @@
   (reduction-relation
    fej
    #:domain (e CT)
-
-   ; R-FIELD
-   (--> ((in-hole E (lkp (new C v ... ⊕ r ...) f_i)) CT)
-        ((in-hole E w) CT)
+   ;R-FIELD
+   (--> ((in-hole E (lkp (new C v_0 ... ⊕ (v_1 R v_2 ...) ...) f_i)) CT)
+        ((in-hole E v_i) CT)
         "(R-FIELD)"
-        (where w (fvalue CT f_i (new C v ... ⊕ r ...))))
+        (where v_i (fvalue CT f_i (new C v_0 ... ⊕ (v_1 R v_2 ...) ...))))
    ))
 
 

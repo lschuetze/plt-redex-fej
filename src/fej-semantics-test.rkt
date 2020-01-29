@@ -18,18 +18,22 @@
            )
          (class E
            (((() A) a) ((() B) b)))
-         )
+         (class G
+           (((() A) a)))
         )
-  )
+  ))
 
 ; programs
-(define term0 (term (lkp (new E (new A ⊕ ) (new B ⊕) ⊕ ) a)))
+ (define term0 (term (lkp (new E (new A ⊕ ) (new B ⊕) ⊕ ) a)))
+ (define term1 (term (lkp (new G (new A ⊕ ) ⊕ ) a)))
 
 ; examples
 (define example0
   `(,term0 ,class-table))
+(define example1
+  `(,term1 ,class-table))
 
-; tests fvalue for fvalue metafunction 
+; tests fvalue for fvalue metafunction
 (test-equal (term (fvalue ,class-table a (new E (new A ⊕ ) (new B ⊕) ⊕ )))
             '(new A ⊕ ))
 (test-equal (term (fvalue ,class-table a (new E (new A ⊕ ) (new B ⊕) ⊕ ((new F ⊕ ) Z (new A ⊕ ) (new B ⊕)))))
@@ -37,9 +41,16 @@
 (test-equal (term (fvalue ,class-table a (new E (new A ⊕ ) (new B ⊕) ⊕ ((new F ⊕ ) Y) ((new F ⊕ ) Z (new A ⊕ ) (new B ⊕)))))
             '(new A ⊕ ))
 
+;(traces red example1)
+
 ; test reduction rules
 (test--> red
-          example0
-          `((new A ⊕ ) ,class-table))
+         example1
+         `((new A ⊕ ) ,class-table))
+(test--> red
+         example0
+         `((new A ⊕ ) ,class-table))
+
+;(apply-reduction-relation red example1)
 
 (test-results)
