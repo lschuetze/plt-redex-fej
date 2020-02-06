@@ -4,7 +4,8 @@
          redex/reduction-semantics)
 
 (provide  fvalue
-          red)
+          red
+          cp)
 
 ; fig. 10 field value lookup
 (define-metafunction fej
@@ -28,6 +29,26 @@
   [(fvalue CT f_i (new D v_d ... ⊕ ((new C v_c ... ⊕ ) R v_r ... ) ((new C_1 v_c1 ... ⊕ ) R_1 v_r1 ...  ) ... ))
    (fvalue CT f_i (new D v_d ... ⊕ ((new C_1 v_c1 ... ⊕ ) R_1 v_r1 ...  ) ... ))])
 
+(define-metafunction fej
+  cp : T v -> v
+
+  [(cp (C R) (new D v_d ... ⊕ ((new C_0 v_c ... ⊕ ) R_0 v_r ... ) ((new C_1 v_c1 ... ⊕ ) R_1 v_r1 ...  ) ... ))
+   (cp (C R) (new D v_d ... ⊕ ((new C_1 v_c1 ... ⊕ ) R_1 v_r1 ...  ) ... ))]
+
+  [(cp (C R) (new D v_d ... ⊕ ((new C v_c ... ⊕ ) R v_r ... ) ((new C_1 v_c1 ... ⊕ ) R_1 v_r1 ...  ) ... ))
+   (new D v_d ... ⊕ ((new C_1 v_c1 ... ⊕ ) R_1 v_r1 ...  ) ... )]
+
+  [(cp (C R) v) v]
+  )
+
+(define-metafunction fej
+  typeof : v -> T
+
+  [(typeof (new C v_0 ... ⊕)) (() C)]
+
+  [(typeof (new c v_0 ... ⊕ ((new d v_1 ... ⊕) r v_2 ...) (v_3 R_1 v_4 ...) ... ))
+   ((typeof (new C v_0 ... ⊕ (v_3 R_1 v_4 ...) ... )) (D R))])
+
 ; fig. 16 dynamic semantics
 (define red
   (reduction-relation
@@ -38,8 +59,25 @@
         ((in-hole E v_i) CT)
         "(R-FIELD)"
         (where v_i (fvalue CT f_i (new C v_0 ... ⊕ (v_1 R v_2 ...) ...))))
-   ))
 
+   ;R-RINVK
+   ;;(--> ((in-hole E (call (new C v_0 ... ⊕ (v_1 R v_2 ...) ...) m v_3 ...)) CT)
+   (--> ((in-hole E (call v_0 m v_1 ...)) CT)
+        ((in-hole E (subst-many (x ...) (v_1 ...)
+                                (subst super ()
+                                        (subst thisC ()
+                                               (subst this v_0 e_0))))) CT)
+         "(R-RINVK)"
+         (where ((x ...) e_0 v_0) (mbody CT m v_0)))
+
+   ;R-INVK
+   ;   (--> ((in-hole E (call (new C v_0 ... ⊕ (v_1 R v_2 ...) ...) m v_3 ...)) CT)
+   (--> ((in-hole E (call v_0 m v_1 ...)) CT)
+        ((in-hole E (subst-many (x ...) (v_1 ...)
+                                (subst this v_0 e_0))) CT)
+        "(R-INVK)"
+        (where ((x ...) e_0 v_0) (mbody CT m v_0))
+   )))
 
 (define-judgment-form fej
 

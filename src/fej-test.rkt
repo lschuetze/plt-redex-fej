@@ -68,17 +68,28 @@
 (test-equal (term (method-in m (((C R) n (((C R) x))) x) (((C R) o (((C R) x))) x)))
             #f)
 
+;(redex-match fej e '(new B ⊕ ((new F ⊕) Y)))
+;; (redex-match fej
+;;              (new C e_0 ... ⊕ (e_1 R e_2 ...) ...)
+;;              '(new B ⊕ ((new F ⊕) Y)))
+;; (redex-match fej
+;;              (new D e_0 ... ⊕ ((new C_0 e_1 ... ⊕) R_0 e_2 ...) (e_3 R_1 e_4 ...) ...)
+;;              '(new B ⊕ ((new F ⊕) Y)))
+;; (redex-match fej e
+;;              '(new B ⊕ ((new F ⊕) Y) ((new F ⊕) Z)))
+
 ; test metafunction mbody
-(test-equal (term (mbody ,class-table m (() B)))
-            '((x) x (() B)))
-(test-equal (term (mbody ,class-table m (((F Y)) B)))
-            '((x) x (() B)))
-(test-equal (term (mbody ,class-table m (((F Y) (F Z)) B)))
-            '((x) x (() B)))
-(test-equal (term (mbody ,class-table o (((F Y)) B)))
-            '((x) x (F Y)))
-(test-equal (term (mbody ,class-table o (((F Z) (F Y)) B)))
-            '((x) x (F Y)))
+;; the terms (new ...) currently do not instantiate the constructors according to class-table
+(test-equal (term (mbody ,class-table m (new B ⊕)))
+            '((x) x (new B ⊕)))
+(test-equal (term (mbody ,class-table m (new B ⊕ ((new F ⊕) Y)))) ; (((F Y)) B)))
+            '((x) x (new B ⊕)))
+(test-equal (term (mbody ,class-table m (new B ⊕ ((new F ⊕) Z) ((new F ⊕) Y)))) ; (((F Y) (F Z)) B)))
+            '((x) x (new B ⊕)))
+(test-equal (term (mbody ,class-table o (new B ⊕ ((new F ⊕) Y)))) ;(((F Y)) B)))
+            '((x) x (new B ⊕ ((new F ⊕) Y)))) ;(F Y)))
+(test-equal (term (mbody ,class-table o (new B ⊕ ((new F ⊕) Y) ((new F ⊕) Z)))) ; (((F Z) (F Y)) B)))
+            '((x) x (new B ⊕ ((new F ⊕) Y))))
 
 (test-results)
 

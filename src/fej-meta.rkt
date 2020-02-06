@@ -76,27 +76,28 @@
 
 ; fig. 12 : method body lookup
 (define-metafunction fej
-  mbody : CT m T -> ((x ...) e T)
+  mbody : CT m e -> ((x ...) e e)
 
   ; MB-CLASS
-  [(mbody CT m (() C))
-   ((x ...) e (() C))
+  [(mbody CT m (new C e_0 ... ⊕)) ; (() C))
+   ((x ...) e (new C e_0 ... ⊕))
    (where (class C ((T f) ...) M ... A ...)
           (class-lookup CT C))
    (where ((T_0 m ((T_1 x) ...)) e)
           (method-in m M ...))]
 
   ; MB-ROLE
-  [(mbody CT m (((C_0 R_0) (C_1 R_1) ...) C_n))
-   ((x ...) e (C_0 R_0))
+  [(mbody CT m (new D e_0 ... ⊕ ((new C_0 e_1 ... ⊕) R_0 e_2 ...) (e_3 R_1 e_4 ...) ...))
+          ;(new D e_d ... ⊕ ((new C_0 e_c ... ⊕ ) R_0 e_r ... ) ((new C_1 e_c1 ... ⊕ ) R_1 e_r1 ...  ) ... ))
+   ((x ...) e (new D e_0 ... ⊕ ((new C_0 e_1 ... ⊕) R_0 e_2 ...)))
    (where (role R_0 requires Mi ... ((T_0 f_0) ...) M ...)
           (role-lookup CT C_0 R_0))
    (where ((T_1 m ((T_2 x) ...)) e)
           (method-in m M ...))]
 
   ; MB-MIXIN
-  [(mbody CT m (((C_0 R_0) (C_1 R_1) ...) C_n))
-   (mbody CT m (((C_1 R_1) ...) C_n))])
+  [(mbody CT m (new D e_0 ... ⊕ (e_1 R_0 e_2 ...) (e_3 R_1 e_4 ...) ...))
+   (mbody CT m (new D e_0 ... ⊕ (e_3 R_1 e_4 ...) ...))])
 
 ; substitute variable with value
 (define-metafunction fej
