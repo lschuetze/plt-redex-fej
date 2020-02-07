@@ -51,13 +51,9 @@
 (test-equal (term (fvalue ,class-table a (new E (new A ⊕ ) (new B ⊕) ⊕ ((new F ⊕ ) Y) ((new F ⊕ ) Z (new A ⊕ ) (new B ⊕)))))
             '(new A ⊕ ))
 
-
 ;(redex-match fej v '(new C ⊕ ((new A ⊕) B)))
-(test-equal (term (cp (A B) (new C ⊕ ((new A ⊕) B))))
-            '(new C ⊕))
-(test-equal (term (cp (A B) (new C ⊕ ((new D ⊕) E) ((new A ⊕) B))))
-            '(new C ⊕))
-
+(test-equal (term (cp (new C ⊕ ((new A ⊕) B) ((new D ⊕) E)) (new C ⊕ ((new A ⊕) B))))
+            '(new C ⊕ ((new D ⊕) E)))
 
 ;(traces red example1)
 

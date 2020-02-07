@@ -32,14 +32,13 @@
 (define-metafunction fej
   cp : v v -> v
 
-  [(cp (new D v_d ... ⊕ ((new C_0 v_c ... ⊕ ) R_0 v_r ... ) ((new C_1 v_c1 ... ⊕ ) R_1 v_r1 ...  ) ... ))
-   (cp (new D v_d ... ⊕ ((new C_1 v_c1 ... ⊕ ) R_1 v_r1 ...  ) ... ))]
-
-  [(cp (new D v_d ... ⊕ ((new C v_c ... ⊕ ) R v_r ... ) ((new C_1 v_c1 ... ⊕ ) R_1 v_r1 ...  ) ... ))
+  [(cp (new D v_d ... ⊕ ((new C v_c ... ⊕ ) R v_r ...  ) ((new C_1 v_c1 ... ⊕ ) R_1 v_r1 ...  ) ... )
+       (new D v_d ... ⊕ ((new C v_c ... ⊕ ) R v_r ... )))
    (new D v_d ... ⊕ ((new C_1 v_c1 ... ⊕ ) R_1 v_r1 ...  ) ... )]
 
-  [(cp v any) v]
-  )
+  [(cp (new D v_d ... ⊕ ((new C_0 v_c0 ... ⊕ ) R_0 v_r0 ...  ) ((new C_1 v_c1 ... ⊕ ) R_1 v_r1 ...  ) ... )
+       (new D v_d ... ⊕ ((new C v_c ... ⊕ ) R v_r ... )))
+   (cp (new D v_d ... ⊕ ((new C_1 v_c1 ... ⊕ ) R_1 v_r1 ...  ) ... ))])
 
 ; fig. 16 dynamic semantics
 (define red
@@ -56,11 +55,11 @@
    (--> ((in-hole E (call v_0 m v_1 ...)) CT)
         ((in-hole E (subst-many (x ...) (v_1 ...)
                                 (subst super
-                                       (cp v_0 (new D e_0 ... ⊕ ((new C_0 e_1 ... ⊕) R_0 e_2 ...)))
-                                       (subst thisC (new C_0 e_1 ... ⊕)
+                                       (cp v_0 (new D e_0 ... ⊕ (e_1 R_0 e_2 ...)))
+                                       (subst thisC e_1
                                               (subst this v_0 e_m))))) CT)
          "(R-RINVK)"
-         (where ((x ...) e_m (new D e_0 ... ⊕ ((new C_0 e_1 ... ⊕) R_0 e_2 ...))) (mbody CT m v_0)))
+         (where ((x ...) e_m (new D e_0 ... ⊕ (e_1 R_0 e_2 ...))) (mbody CT m v_0)))
 
    ;R-INVK
    ;   (--> ((in-hole E (call (new C v_0 ... ⊕ (v_1 R v_2 ...) ...) m v_3 ...)) CT)
